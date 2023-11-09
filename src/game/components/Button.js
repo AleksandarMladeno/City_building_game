@@ -9,6 +9,10 @@ class Button {
       .setOrigin(0, 0)
       .setInteractive({ cursor: "pointer" });
 
+    this.rect.on("pointerdown", () => {
+      this.handlers.click();
+    });
+
     //border
     this.graphics = this.scene.add.graphics();
     this.graphics.lineStyle(2, 0x004c23);
