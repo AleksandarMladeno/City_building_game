@@ -1,6 +1,19 @@
 import Phaser, { Scene } from "phaser";
 
-import ISOMETRIC_GRID from "../../assests/FfT_Grid_L1.png";
+import ISOMETRIC_GRID from "../../assests/FfT_Grid_L2.png";
+import GREATBARRIER from "../../assests/GolfCourse_Maps/FfT_01-GreatBarrier_26tiles_L1.png";
+import OMAHABEACH from "../../assests/GolfCourse_Maps/FfT_02_OmahaBeach_46tiles_L1.png";
+import PUPUKE from "../../assests/GolfCourse_Maps/FfT_03_Pupuke_45tiles_L1.png";
+import TAKAPUNA from "../../assests/GolfCourse_Maps/FfT_04_Takapuna_43tiles_L1.png";
+import WAIHEKEISLAND from "../../assests/GolfCourse_Maps/FfT_05_WaihekeIsland_37tiles_L1.png";
+import WAITEMATA from "../../assests/GolfCourse_Maps/FfT_06-Waitemata_27tiles_L1.png";
+import MURIWAI from "../../assests/GolfCourse_Maps/FfT_07_Muriwai_86tiles_L1.png";
+import CHAMBERLAINPARK from "../../assests/GolfCourse_Maps/FfT_08_ChamberlainPark_32tiles_L1.png";
+import WAITTAKERE from "../../assests/GolfCourse_Maps/FfT_09_Waitakere_47tiles_L1.png";
+import REMUERA from "../../assests/GolfCourse_Maps/FfT_10_Remuera_61tiles_L1.png";
+import AWHITU from "../../assests/GolfCourse_Maps/FfT_11_Awhitu_15tiles_L1.png";
+import CLARKSBEACH from "../../assests/GolfCourse_Maps/FfT_12_ClarksBeach_34tiles_L1.png";
+import WAIUKU from "../../assests/GolfCourse_Maps/FfT_13_Waiuku_36tiles_L1.png";
 import HOUSING_1HA from "../../assests/Buildings/FfT_Housing_1ha.svg";
 import GOLFCOURSE_2HA from "../../assests/Buildings/FfT_GolfCourse_2ha.svg";
 import GROCERYSTORE_1HA from "../../assests/Buildings/FfT_Groceries_1ha.svg";
@@ -26,8 +39,21 @@ import SelectMenu from "../components/SelectMenu";
 const DEVICEHEIGHT = window.innerHeight;
 const DEVICEWIDTH = window.innerWidth;
 
-const FIRSTBUILDINGX = 163;
-const FIRSTBUILDINGY = 463;
+const FIRSTBUILDING = [
+  { x: 264, y: 533 },
+  { x: 163, y: 516 },
+  { x: 163, y: 516 },
+  { x: 163, y: 516 },
+  { x: 164, y: 465 },
+  { x: 264, y: 513 },
+  { x: -236, y: 567 },
+  { x: 264, y: 533 },
+  { x: 164, y: 545 },
+  { x: -38, y: 554 },
+  { x: 465, y: 493 },
+  { x: 264, y: 533 },
+  { x: 164, y: 475 },
+];
 
 const DELTAXDELTAX = 100;
 const DELTAXDELTAY = -58;
@@ -39,17 +65,159 @@ const BUILDINGSPACING = 230;
 
 const MAXDISTANCE = Math.sqrt(100 * 100 + 58 * 58);
 
+const ISOMETRIC_GRID_LOCATION = [
+  140, 100, 100, 100, 150, 160, 50, 140, 70, 60, 180, 140, 140,
+];
+
+const ISOMETRIC_GRID_NAME = [
+  "greatbarrier",
+  "omahabeach",
+  "pupuke",
+  "takapuna",
+  "waihekeisland",
+  "waitemata",
+  "muriwai",
+  "chamberlainpark",
+  "waittakere",
+  "remuera",
+  "awhitu",
+  "clarksbeach",
+  "waiuku",
+];
+
+const MAPROW = [7, 8, 8, 8, 8, 7, 12, 7, 8, 10, 5, 7, 8];
+
 const MAP = [
-  [1, 4],
-  [0, 5],
-  [-1, 6],
-  [-1, 7],
-  [0, 7],
-  [1, 8],
-  [2, 8],
-  [3, 8],
-  [4, 7],
-  [5, 6],
+  [
+    [4, 4],
+    [2, 6],
+    [1, 6],
+    [2, 7],
+    [3, 6],
+    [1, 8],
+    [4, 6],
+    [5, 5],
+  ],
+  [
+    [2, 5],
+    [1, 6],
+    [1, 7],
+    [1, 7],
+    [2, 8],
+    [3, 8],
+    [4, 8],
+    [5, 7],
+  ],
+  [
+    [2, 5],
+    [1, 6],
+    [1, 7],
+    [1, 7],
+    [2, 8],
+    [3, 8],
+    [4, 8],
+    [5, 7],
+  ],
+  [
+    [2, 4],
+    [1, 6],
+    [1, 6],
+    [1, 7],
+    [2, 8],
+    [3, 8],
+    [4, 8],
+    [5, 7],
+  ],
+  [
+    [2, 3],
+    [1, 4],
+    [1, 5],
+    [1, 6],
+    [2, 7],
+    [3, 8],
+    [4, 8],
+    [5, 7],
+  ],
+  [
+    [3, 4],
+    [2, 5],
+    [1, 6],
+    [2, 7],
+    [3, 7],
+    [4, 6],
+    [5, 5],
+  ],
+  [
+    [4, 6],
+    [3, 8],
+    [2, 9],
+    [1, 10],
+    [1, 11],
+    [2, 11],
+    [3, 12],
+    [4, 12],
+    [5, 11],
+    [6, 11],
+    [7, 10],
+    [8, 9],
+  ],
+  [
+    [2, 4],
+    [1, 6],
+    [1, 6],
+    [2, 7],
+    [3, 7],
+    [4, 7],
+    [5, 6],
+  ],
+  [
+    [3, 5],
+    [1, 7],
+    [1, 7],
+    [1, 8],
+    [2, 8],
+    [3, 8],
+    [4, 7],
+    [5, 7],
+  ],
+  [
+    [3, 5],
+    [2, 7],
+    [1, 8],
+    [1, 9],
+    [2, 9],
+    [3, 10],
+    [4, 10],
+    [5, 10],
+    [6, 9],
+    [7, 8],
+  ],
+  [
+    [2, 2],
+    [1, 4],
+    [1, 4],
+    [2, 5],
+    [3, 4],
+  ],
+  [
+    [2, 5],
+    [1, 6],
+    [1, 7],
+    [2, 7],
+    [3, 7],
+    [4, 7],
+    [5, 6],
+  ],
+  [
+    [3, 3],
+    [2, 5],
+    [1, 6],
+    [1, 7],
+    [2, 7],
+    [3, 8],
+    [4, 7],
+    [5, 6],
+  ],
 ];
 
 var position, offsetX, offsetY;
@@ -57,6 +225,7 @@ var position, offsetX, offsetY;
 class Board extends Scene {
   constructor(props) {
     super(props);
+    this.grid = [];
     this.map = [];
     this.mapIndex = 0;
     this.chevron_down = null;
@@ -72,11 +241,15 @@ class Board extends Scene {
     this.tmpItems = [];
   }
 
-  getPosition(row, col) {
+  getPosition(index, row, col) {
     const x =
-      FIRSTBUILDINGX + (row - 1) * DELTAXDELTAX + (col - 1) * DELTAYDELTAX;
+      FIRSTBUILDING[index].x +
+      (row - 1) * DELTAXDELTAX +
+      (col - 1) * DELTAYDELTAX;
     const y =
-      FIRSTBUILDINGY + (row - 1) * DELTAYDELTAY + (col - 1) * DELTAXDELTAY;
+      FIRSTBUILDING[index].y +
+      (row - 1) * DELTAYDELTAY +
+      (col - 1) * DELTAXDELTAY;
 
     return { x, y };
   }
@@ -131,12 +304,23 @@ class Board extends Scene {
   }
 
   // Triple Array to Double Array
-  triple2double(triple, index, double) {
+  triple2double(triple, index) {
+    let td = [];
+    for (let i = 0; i < triple[index].length; i++) {
+      let td1 = [];
+      for (let j = 0; j < triple[index][i].length; j++) {
+        td1.push(0);
+      }
+      td.push(td1);
+    }
+
     for (let i = 0; i < triple[index].length; i++) {
       for (let j = 0; j < triple[index][i].length; j++) {
-        double[i][j] = triple[index][i][j];
+        td[i][j] = triple[index][i][j];
       }
     }
+
+    return td;
   }
 
   // Double to Double
@@ -151,11 +335,14 @@ class Board extends Scene {
   // Menu Selected
 
   menuSelected = (index) => {
-    for (let item of this.mapItems[this.mapIndex]) item.setAlpha(0);
-    for (let item of this.mapItems[index]) item.setAlpha(1);
+    for (let item of this.mapItems[this.mapIndex])
+      if (item !== null) item.setAlpha(0);
+    for (let item of this.mapItems[index]) if (item !== null) item.setAlpha(1);
+    this.grid[this.mapIndex].setAlpha(0);
+    this.grid[index].setAlpha(1);
     this.mapIndex = index;
 
-    this.triple2double(this.map, this.mapIndex, this.status);
+    this.status = this.triple2double(this.map, this.mapIndex);
 
     for (let i = 0; i < this.tmpItems.length; i++) {
       this.tmpItems[i].setAlpha(0);
@@ -275,17 +462,22 @@ class Board extends Scene {
           return;
         }
         let item;
+
         if (gameObject.index === 1) {
           if (this.positionAvailable(index.row, index.col, 2, 1, this.status)) {
             item = this.add
               .image(
-                position[index.row][index.col].x + 5,
-                position[index.row][index.col].y,
+                position[this.mapIndex][index.row][index.col].x + 5,
+                position[this.mapIndex][index.row][index.col].y,
                 "golfcourse_2ha"
               )
               .setOrigin(0, 1)
               .setDisplaySize(286, 205)
-              .setDepth(index.row * 10 + 10 - index.col);
+              .setDepth(
+                index.row * MAPROW[this.mapIndex] +
+                  MAPROW[this.mapIndex] -
+                  index.col
+              );
 
             gameObject.setTexture("golfcourse").setDisplaySize(150, 150);
 
@@ -303,12 +495,16 @@ class Board extends Scene {
           if (this.positionAvailable(index.row, index.col, 1, 1, this.status)) {
             item = this.add
               .image(
-                position[index.row][index.col].x,
-                position[index.row][index.col].y,
+                position[this.mapIndex][index.row][index.col].x,
+                position[this.mapIndex][index.row][index.col].y,
                 "house_1ha"
               )
               .setOrigin(0, 1)
-              .setDepth(index.row * 10 + 10 - index.col);
+              .setDepth(
+                index.row * MAPROW[this.mapIndex] +
+                  MAPROW[this.mapIndex] -
+                  index.col
+              );
 
             gameObject.setTexture("house");
 
@@ -326,13 +522,13 @@ class Board extends Scene {
           if (this.positionAvailable(index.row, index.col, 2, 2, this.status)) {
             item = this.add
               .image(
-                position[index.row][index.col].x - 95,
-                position[index.row][index.col].y,
+                position[this.mapIndex][index.row][index.col].x - 95,
+                position[this.mapIndex][index.row][index.col].y,
                 "hospital_4ha"
               )
               .setOrigin(0, 1)
               .setScale(2.2)
-              .setDepth(index.row * 10 - index.col);
+              .setDepth(index.row * MAPROW[this.mapIndex] - index.col);
 
             gameObject.setTexture("hospital").setScale(1);
 
@@ -350,12 +546,16 @@ class Board extends Scene {
           if (this.positionAvailable(index.row, index.col, 1, 1, this.status)) {
             item = this.add
               .image(
-                position[index.row][index.col].x + 9,
-                position[index.row][index.col].y,
+                position[this.mapIndex][index.row][index.col].x + 9,
+                position[this.mapIndex][index.row][index.col].y,
                 "grocerystore_1ha"
               )
               .setOrigin(0, 1)
-              .setDepth(index.row * 10 + 10 - index.col);
+              .setDepth(
+                index.row * MAPROW[this.mapIndex] +
+                  MAPROW[this.mapIndex] -
+                  index.col
+              );
 
             gameObject.setTexture("grocerystore");
 
@@ -373,13 +573,13 @@ class Board extends Scene {
           if (this.positionAvailable(index.row, index.col, 2, 2, this.status)) {
             item = this.add
               .image(
-                position[index.row][index.col].x - 105,
-                position[index.row][index.col].y,
+                position[this.mapIndex][index.row][index.col].x - 105,
+                position[this.mapIndex][index.row][index.col].y,
                 "school_4ft"
               )
               .setOrigin(0, 1)
               .setScale(2.2)
-              .setDepth(index.row * 10 - index.col);
+              .setDepth(index.row * MAPROW[this.mapIndex] - index.col);
 
             gameObject.setTexture("school_4ft").setScale(1);
 
@@ -448,42 +648,54 @@ class Board extends Scene {
             case 1:
               gameObject
                 .setPosition(
-                  position[index.row][index.col].x + 5,
-                  position[index.row][index.col].y
+                  position[this.mapIndex][index.row][index.col].x + 5,
+                  position[this.mapIndex][index.row][index.col].y
                 )
-                .setDepth(index.row * 10 + 10 - index.col);
+                .setDepth(
+                  index.row * MAPROW[this.mapIndex] +
+                    MAPROW[this.mapIndex] -
+                    index.col
+                );
               break;
             case 2:
               gameObject
                 .setPosition(
-                  position[index.row][index.col].x,
-                  position[index.row][index.col].y
+                  position[this.mapIndex][index.row][index.col].x,
+                  position[this.mapIndex][index.row][index.col].y
                 )
-                .setDepth(index.row * 10 + 10 - index.col);
+                .setDepth(
+                  index.row * MAPROW[this.mapIndex] +
+                    MAPROW[this.mapIndex] -
+                    index.col
+                );
               break;
             case 3:
               gameObject
                 .setPosition(
-                  position[index.row][index.col].x - 95,
-                  position[index.row][index.col].y
+                  position[this.mapIndex][index.row][index.col].x - 95,
+                  position[this.mapIndex][index.row][index.col].y
                 )
-                .setDepth(index.row * 10 - index.col);
+                .setDepth(index.row * MAPROW[this.mapIndex] - index.col);
               break;
             case 4:
               gameObject
                 .setPosition(
-                  position[index.row][index.col].x + 9,
-                  position[index.row][index.col].y
+                  position[this.mapIndex][index.row][index.col].x + 9,
+                  position[this.mapIndex][index.row][index.col].y
                 )
-                .setDepth(index.row * 10 + 10 - index.col);
+                .setDepth(
+                  index.row * MAPROW[this.mapIndex] +
+                    MAPROW[this.mapIndex] -
+                    index.col
+                );
               break;
             case 5:
               gameObject
                 .setPosition(
-                  position[index.row][index.col].x - 105,
-                  position[index.row][index.col].y
+                  position[this.mapIndex][index.row][index.col].x - 105,
+                  position[this.mapIndex][index.row][index.col].y
                 )
-                .setDepth(index.row * 10 - index.col);
+                .setDepth(index.row * MAPROW[this.mapIndex] - index.col);
               break;
           }
           this.setStatus(
@@ -649,17 +861,16 @@ class Board extends Scene {
     let row = -1;
     let col = -1;
 
-    var min = Math.sqrt(
-      (position[0][2].x - xPos) * (position[0][2].x - xPos) +
-        (position[0][2].y - yPos) * (position[0][2].y - yPos)
-    );
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        if (position[i][j] === null) continue;
+    var min = 10000;
+    for (let i = 0; i < MAPROW[this.mapIndex]; i++) {
+      for (let j = 0; j < MAPROW[this.mapIndex]; j++) {
+        if (position[this.mapIndex][i][j] === null) continue;
 
         var temp = Math.sqrt(
-          (position[i][j].x - xPos) * (position[i][j].x - xPos) +
-            (position[i][j].y - yPos) * (position[i][j].y - yPos)
+          (position[this.mapIndex][i][j].x - xPos) *
+            (position[this.mapIndex][i][j].x - xPos) +
+            (position[this.mapIndex][i][j].y - yPos) *
+              (position[this.mapIndex][i][j].y - yPos)
         );
 
         if (temp > MAXDISTANCE) continue;
@@ -671,14 +882,28 @@ class Board extends Scene {
         }
       }
     }
-
+    console.log("ROW & COL");
+    console.log(row, col);
     return { row, col };
   }
 
   preload() {
     this.load.image("grid", ISOMETRIC_GRID);
-    this.load.svg("house_1ha", HOUSING_1HA);
-    this.load.svg("golfcourse_2ha", GOLFCOURSE_2HA);
+    this.load.image("greatbarrier", GREATBARRIER);
+    this.load.image("omahabeach", OMAHABEACH);
+    this.load.image("pupuke", PUPUKE);
+    this.load.image("takapuna", TAKAPUNA);
+    this.load.image("waihekeisland", WAIHEKEISLAND);
+    this.load.image("waitemata", WAITEMATA);
+    this.load.image("muriwai", MURIWAI);
+    this.load.image("chamberlainpark", CHAMBERLAINPARK);
+    this.load.image("waittakere", WAITTAKERE);
+    this.load.image("remuera", REMUERA);
+    this.load.image("awhitu", AWHITU);
+    this.load.image("clarksbeach", CLARKSBEACH);
+    this.load.image("waiuku", WAIUKU);
+    this.load.image("house_1ha", HOUSING_1HA);
+    this.load.image("golfcourse_2ha", GOLFCOURSE_2HA);
     this.load.image("grocerystore_1ha", GROCERYSTORE_1HA);
     this.load.image("hospital_4ha", HOSPITAL_4HA);
     this.load.image("school_4ft", SCHOOL_4FT);
@@ -698,46 +923,56 @@ class Board extends Scene {
     // this.load.text("myFont", "../../assets/PPMori-Book.ttf");
   }
   init() {
-    let tp = [],
-      tm = [],
-      ts = [];
-    for (let i = 0; i < 10; i++) {
-      let tp1 = [],
-        ts1 = [],
-        ti1 = [];
-      for (let j = 0; j < 10; j++) {
-        if (j > MAP[i][0] && j < MAP[i][1] + 2) {
-          tp1.push(this.getPosition(i + 1, j - 1));
+    let ts = [];
+    for (let i = 0; i < MAPROW[this.mapIndex]; i++) {
+      let ts1 = [];
+      for (let j = 0; j < MAPROW[this.mapIndex]; j++) {
+        if (j > MAP[this.mapIndex][i][0] - 2 && j < MAP[this.mapIndex][i][1]) {
           ts1.push(0);
         } else {
-          tp1.push(null);
           ts1.push(100);
         }
-        ti1.push(null);
       }
-      tp.push(tp1);
       ts.push(ts1);
     }
-    position = tp;
     this.status = ts;
 
+    let tp = [],
+      tm = [],
+      ti = [];
     for (let i = 0; i < 13; i++) {
-      let tm1 = [];
-      for (let j = 0; j < 10; j++) {
-        let tm2 = [];
-        for (let k = 0; k < 10; k++) {
-          if (k > MAP[j][0] && k < MAP[j][1] + 2) {
+      let tm1 = [],
+        tp1 = [],
+        ti1 = [];
+      for (let j = 0; j < MAPROW[i]; j++) {
+        let tm2 = [],
+          tp2 = [];
+        for (let k = 0; k < MAPROW[i]; k++) {
+          if (k > MAP[i][j][0] - 2 && k < MAP[i][j][1]) {
             tm2.push(0);
+            tp2.push(this.getPosition(i, j + 1, k + 1));
           } else {
             tm2.push(100);
+            tp2.push(null);
           }
         }
         tm1.push(tm2);
+        tp1.push(tp2);
+        ti1.push(null);
       }
       tm.push(tm1);
-      this.mapItems.push([]);
+      tp.push(tp1);
+      ti.push(ti1);
     }
+
     this.map = tm;
+    position = tp;
+    this.mapItems = ti;
+
+    console.log("Position");
+    console.log(position);
+    console.log("MapItems");
+    console.log(this.mapItems);
   }
   create() {
     this.input.on(
@@ -806,7 +1041,7 @@ class Board extends Scene {
     });
     this.overlayText.setAlpha(1).setDepth(121);
     // Title
-    const img = this.add.image(150, 150, "title").setScale(1.5);
+    const img = this.add.image(150, 150, "title").setScale(1.5).setDepth(101);
 
     // Menu
     new SelectMenu(
@@ -825,14 +1060,25 @@ class Board extends Scene {
 
     // Overlay
     this.add
-      .image(window.innerWidth / 2, window.innerHeight / 2 - 330, "overlay")
-      .setScale(3.6, 2.6)
+      .image(DEVICEWIDTH / 2, DEVICEHEIGHT / 2 - 360, "overlay")
+      .setScale(6.6, 3.6)
       .setDepth(100);
 
     //Isometric grid
-    this.add
-      .image(window.innerWidth / 2, window.innerHeight / 2 - 40, "grid")
-      .setOrigin(0.5, 0.5);
+    for (let i = 0; i < 13; i++) {
+      let grid = this.add
+        .image(
+          DEVICEWIDTH / 2,
+          DEVICEHEIGHT / 2 - ISOMETRIC_GRID_LOCATION[i],
+          ISOMETRIC_GRID_NAME[i]
+        )
+        .setOrigin(0.5, 0.5)
+        .setAlpha(0);
+
+      this.grid.push(grid);
+    }
+
+    this.grid[this.mapIndex].setAlpha(1);
 
     // Chevron Down Container
     // this.chevron_down.on(
@@ -904,9 +1150,9 @@ class Board extends Scene {
         let tmpStatus = [],
           ts = [];
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < MAPROW[this.mapIndex]; i++) {
           let ts1 = [];
-          for (let j = 0; j < 10; j++) {
+          for (let j = 0; j < MAPROW[this.mapIndex]; j++) {
             ts1.push(0);
           }
           ts.push(ts1);
@@ -916,19 +1162,21 @@ class Board extends Scene {
 
         this.mapToOther(this.status, tmpStatus);
 
-        for (let i = 0; i < 10; i++) {
-          for (let j = 0; j < 10; j++) {
+        for (let i = 0; i < MAPROW[this.mapIndex]; i++) {
+          for (let j = 0; j < MAPROW[this.mapIndex]; j++) {
             if (tmpStatus[i][j] === 0) {
               if (this.positionAvailable(i, j, 2, 1, tmpStatus)) {
                 let item = this.add
                   .image(
-                    position[i][j].x + 5,
-                    position[i][j].y,
+                    position[this.mapIndex][i][j].x + 5,
+                    position[this.mapIndex][i][j].y,
                     "golfcourse_2ha"
                   )
                   .setOrigin(0, 1)
                   .setDisplaySize(286, 205)
-                  .setDepth(i * 10 + 10 - j)
+                  .setDepth(
+                    i * MAPROW[this.mapIndex] + MAPROW[this.mapIndex] - j
+                  )
                   .setAlpha(1);
 
                 this.tmpItems.push(item);
@@ -961,8 +1209,8 @@ class Board extends Scene {
       for (let i = 0; i < 5; i++) {
         num[i] = 0;
       }
-      for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
+      for (let i = 0; i < MAPROW[this.mapIndex]; i++) {
+        for (let j = 0; j < MAPROW[this.mapIndex]; j++) {
           for (let k = 1; k < 6; k++) {
             if (this.status[i][j] === k) {
               num[k - 1]++;
