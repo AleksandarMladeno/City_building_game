@@ -597,35 +597,6 @@ class Board extends Scene {
 
         this.mapItems[this.mapIndex].push(item);
 
-        item.on("pointerover", () => {
-          item.setAlpha(0.5);
-          this.overlayText.setText(item.text);
-          switch (item.index) {
-            case 1:
-              this.overlayText.setPosition(item.x + 90, item.y - 110);
-              break;
-            case 2:
-              this.overlayText.setPosition(item.x + 70, item.y - 90);
-              break;
-            case 3:
-              this.overlayText.setPosition(item.x + 150, item.y - 150);
-              break;
-            case 4:
-              this.overlayText.setPosition(item.x + 30, item.y - 70);
-              break;
-            case 5:
-              this.overlayText.setPosition(item.x + 170, item.y - 150);
-              break;
-          }
-          this.overlayText.setAlpha(2);
-        });
-        item.on("pointerout", () => {
-          item.setAlpha(1);
-          this.overlayText.setAlpha(0);
-        });
-        item.on("dragstart", () => {
-          this.overlayText.setAlpha(0);
-        });
         item.on("dragend", () => {
           item.setAlpha(1);
         });
@@ -743,10 +714,29 @@ class Board extends Scene {
     img1.text = "";
     img1.setInteractive({ cursor: "pointer" });
 
+    switch (img1.index) {
+      case 1:
+        img1.text = "Golf Course";
+        break;
+      case 2:
+        img1.text = "House";
+        break;
+      case 3:
+        img1.text = "Hospital";
+        break;
+      case 4:
+        img1.text = "Grocery Store";
+        break;
+      case 5:
+        img1.text = "School";
+        break;
+    }
+
     this.input.setDraggable(img1);
 
     img1.on("dragstart", () => {
       this.chevron_down.bringToTop(img1);
+      this.overlayText.setAlpha(0);
     });
 
     img1.on("dragend", () => {
@@ -754,107 +744,129 @@ class Board extends Scene {
     });
 
     img1.on("pointerover", () => {
-      img1.setAlpha(0.5);
+      img1.setAlpha(0.3);
+      img.setAlpha(0.3);
+
+      this.overlayText.setText(img1.text);
+      switch (img1.index) {
+        case 1:
+          this.overlayText.setPosition(img1.x + 30, img1.y - 70);
+          break;
+        case 2:
+          this.overlayText.setPosition(img1.x + 40, img1.y - 70);
+          break;
+        case 3:
+          this.overlayText.setPosition(img1.x + 40, img1.y - 70);
+          break;
+        case 4:
+          this.overlayText.setPosition(img1.x + 5, img1.y - 70);
+          break;
+        case 5:
+          this.overlayText.setPosition(img1.x + 70, img1.y - 70);
+          break;
+      }
+      this.overlayText.setAlpha(2);
     });
 
     img1.on("pointerout", () => {
       img1.setAlpha(1);
+      img.setAlpha(1);
     });
 
-    let subDescription = null;
+    // let subDescription = null;
 
-    if (buildingName === "golfcourse") {
-      subDescription = this.add
-        .text(
-          BUILDINGOFFSET + index * BUILDINGSPACING + 80,
-          210,
-          "Hole of Golf (2ha)",
-          {
-            fontFamily: "Arial",
-            fontSize: "16px",
-            color: "#9fd771",
-          }
-        )
-        .setOrigin(0.5, 0.5)
-        .setAlpha(0);
-      this.chevron_down.add(subDescription);
-    }
+    // if (buildingName === "golfcourse") {
+    //   subDescription = this.add
+    //     .text(
+    //       BUILDINGOFFSET + index * BUILDINGSPACING + 80,
+    //       210,
+    //       "Hole of Golf (2ha)",
+    //       {
+    //         fontFamily: "Arial",
+    //         fontSize: "16px",
+    //         color: "#9fd771",
+    //       }
+    //     )
+    //     .setOrigin(0.5, 0.5)
+    //     .setAlpha(0);
+    //   this.chevron_down.add(subDescription);
+    // }
 
-    if (buildingName === "house") {
-      subDescription = this.add
-        .text(
-          BUILDINGOFFSET + index * BUILDINGSPACING + 70,
-          210,
-          "Housing (1ha)",
-          {
-            fontFamily: "Arial",
-            fontSize: "16px",
-            color: "#9fd771",
-          }
-        )
-        .setOrigin(0.5, 0.5)
-        .setAlpha(0);
-      this.chevron_down.add(subDescription);
-    }
+    // if (buildingName === "house") {
+    //   subDescription = this.add
+    //     .text(
+    //       BUILDINGOFFSET + index * BUILDINGSPACING + 70,
+    //       210,
+    //       "Housing (1ha)",
+    //       {
+    //         fontFamily: "Arial",
+    //         fontSize: "16px",
+    //         color: "#9fd771",
+    //       }
+    //     )
+    //     .setOrigin(0.5, 0.5)
+    //     .setAlpha(0);
+    //   this.chevron_down.add(subDescription);
+    // }
 
-    if (buildingName === "hospital") {
-      subDescription = this.add
-        .text(
-          BUILDINGOFFSET + index * BUILDINGSPACING + 70,
-          210,
-          "Hospital (4ha)",
-          {
-            fontFamily: "Arial",
-            fontSize: "16px",
-            color: "#9fd771",
-          }
-        )
-        .setOrigin(0.5, 0.5)
-        .setAlpha(0);
-      this.chevron_down.add(subDescription);
-    }
+    // if (buildingName === "hospital") {
+    //   subDescription = this.add
+    //     .text(
+    //       BUILDINGOFFSET + index * BUILDINGSPACING + 70,
+    //       210,
+    //       "Hospital (4ha)",
+    //       {
+    //         fontFamily: "Arial",
+    //         fontSize: "16px",
+    //         color: "#9fd771",
+    //       }
+    //     )
+    //     .setOrigin(0.5, 0.5)
+    //     .setAlpha(0);
+    //   this.chevron_down.add(subDescription);
+    // }
 
-    if (buildingName === "grocerystore") {
-      subDescription = this.add
-        .text(
-          BUILDINGOFFSET + index * BUILDINGSPACING + 70,
-          210,
-          "Grocery Store (1ha)",
-          {
-            fontFamily: "Arial",
-            fontSize: "16px",
-            color: "#9fd771",
-          }
-        )
-        .setOrigin(0.5, 0.5)
-        .setAlpha(0);
-      this.chevron_down.add(subDescription);
-    }
+    // if (buildingName === "grocerystore") {
+    //   subDescription = this.add
+    //     .text(
+    //       BUILDINGOFFSET + index * BUILDINGSPACING + 70,
+    //       210,
+    //       "Grocery Store (1ha)",
+    //       {
+    //         fontFamily: "Arial",
+    //         fontSize: "16px",
+    //         color: "#9fd771",
+    //       }
+    //     )
+    //     .setOrigin(0.5, 0.5)
+    //     .setAlpha(0);
+    //   this.chevron_down.add(subDescription);
+    // }
 
-    if (buildingName === "school") {
-      subDescription = this.add
-        .text(
-          BUILDINGOFFSET + index * BUILDINGSPACING + 80,
-          210,
-          "School (4ft)",
-          {
-            fontFamily: "Arial",
-            fontSize: "16px",
-            color: "#9fd771",
-          }
-        )
-        .setOrigin(0.5, 0.5)
-        .setAlpha(0);
-      this.chevron_down.add(subDescription);
-    }
+    // if (buildingName === "school") {
+    //   subDescription = this.add
+    //     .text(
+    //       BUILDINGOFFSET + index * BUILDINGSPACING + 80,
+    //       210,
+    //       "School (4ft)",
+    //       {
+    //         fontFamily: "Arial",
+    //         fontSize: "16px",
+    //         color: "#9fd771",
+    //       }
+    //     )
+    //     .setOrigin(0.5, 0.5)
+    //     .setAlpha(0);
+    //   this.chevron_down.add(subDescription);
+    // }
 
-    img1.on("pointerover", () => {
-      subDescription.setAlpha(1);
-    });
+    // img1.on("pointerover", () => {
+    //   subDescription.setAlpha(1);
+    // });
 
-    img1.on("pointerout", () => {
-      subDescription.setAlpha(0);
-    });
+    // img1.on("pointerout", () => {
+    //   subDescription.setAlpha(0);
+    // });
   }
 
   getItemIndex(xPos, yPos) {
@@ -1034,12 +1046,6 @@ class Board extends Scene {
     // this.chevron_up.inputEnabled = true;
     // this.chevron_up.setInteractive({ cursor: "pointer" });
     this.chevron_down.setAlpha(0);
-    this.overlayText = this.add.text(0, 0, "", {
-      fontFamily: "Arial",
-      fontSize: 20,
-      color: "#9fd771",
-    });
-    this.overlayText.setAlpha(1).setDepth(121);
     // Title
     const img = this.add.image(150, 150, "title").setScale(1.5).setDepth(101);
 
@@ -1129,6 +1135,16 @@ class Board extends Scene {
         .setOrigin(0, 0)
         .setInteractive({ cursor: "pointer" })
     );
+
+    // Add Overlaytext
+    this.overlayText = this.add.text(0, 0, "", {
+      fontFamily: "Arial",
+      fontSize: 20,
+      color: "#9fd771",
+    });
+    this.overlayText.setAlpha(1).setDepth(121);
+
+    this.chevron_down.add(this.overlayText);
 
     // Building items
     this.initBuildings();
